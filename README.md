@@ -1,3 +1,22 @@
+Estaría bien el 
+api con .net 3.1, 
+una de repository, 
+otra de entities (para los datos de sql), 
+otra para los dto, 
+otra para el repository 
+y otra de helpers o transversal
+
+Ejercicio2.Api (Controllers)
+Ejercicio2.Api.Domain (Login de negocios - Mappers)
+Ejercicio2.Api.Entities (Entidades - DbContext - DbEntities)
+Ejercicio2.Api.Repository (patron repositorio)
+Ejercicio2.Api.Repository.Sqlite (Implementacion de Sqlite)
+Ejercicio2.Api.Repository.MsSql (Implementacion de MsSQL)
+Ejercicio2.Api.Common (helpers)
+
+git checkout -b feature/template
+git push origin feature/template 
+
 # Backend del Segundo Ejercicio
 
 # Se tiene que crear un API que cree, actualice, eliminé y obtenga uno o más registros

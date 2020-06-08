@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Entities\Ejercicio2.Api.Entities\Ejercicio2.Api.Entities.csproj" />
+    <ProjectReference Include="..\..\Repositories\Ejercicio2.Api.Repository.Interfaces\Ejercicio2.Api.Repository.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

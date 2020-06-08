@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Entities\Ejercicio2.Api.Entities\Ejercicio2.Api.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

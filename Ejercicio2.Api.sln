@@ -23,13 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.Repository.M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.Repository.Sqlite", "Repositories\Ejercicio2.Api.Repository.Sqlite\Ejercicio2.Api.Repository.Sqlite.csproj", "{A107DD9A-A9C3-4AA3-A67B-A7B0CAF6CE58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.Transversal.Common", "Transversal\Ejercicio2.Api.Transversal.Common\Ejercicio2.Api.Transversal.Common.csproj", "{6AC7F3C0-E33C-4B63-866B-278BDFA349AE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ejercicio2.Api.Auth", "Apis\Ejercicio2.Api.Auth\Ejercicio2.Api.Auth.csproj", "{59414AEA-6F22-424F-9C05-AC4F9EED9F54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.Auth", "Apis\Ejercicio2.Api.Auth\Ejercicio2.Api.Auth.csproj", "{59414AEA-6F22-424F-9C05-AC4F9EED9F54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.Users", "Apis\Ejercicio2.Api.Users\Ejercicio2.Api.Users.csproj", "{1FEC8375-5C1B-4241-BC58-AC0EB2C4A999}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ejercicio2.Api.AuthJwt", "Transversal\Ejercicio2.Api.AuthJwt\Ejercicio2.Api.AuthJwt.csproj", "{A4D14B75-E889-4FF1-9DCD-EB8A60D4224C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.AuthJwt", "Transversal\Ejercicio2.Api.AuthJwt\Ejercicio2.Api.AuthJwt.csproj", "{A4D14B75-E889-4FF1-9DCD-EB8A60D4224C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ejercicio2.Api.Common", "Transversal\Ejercicio2.Api.Common\Ejercicio2.Api.Common.csproj", "{10064054-7714-4B7E-97E5-414C760223BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +57,6 @@ Global
 		{A107DD9A-A9C3-4AA3-A67B-A7B0CAF6CE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A107DD9A-A9C3-4AA3-A67B-A7B0CAF6CE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A107DD9A-A9C3-4AA3-A67B-A7B0CAF6CE58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AC7F3C0-E33C-4B63-866B-278BDFA349AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AC7F3C0-E33C-4B63-866B-278BDFA349AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AC7F3C0-E33C-4B63-866B-278BDFA349AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AC7F3C0-E33C-4B63-866B-278BDFA349AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{59414AEA-6F22-424F-9C05-AC4F9EED9F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{59414AEA-6F22-424F-9C05-AC4F9EED9F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59414AEA-6F22-424F-9C05-AC4F9EED9F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,6 +69,10 @@ Global
 		{A4D14B75-E889-4FF1-9DCD-EB8A60D4224C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4D14B75-E889-4FF1-9DCD-EB8A60D4224C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4D14B75-E889-4FF1-9DCD-EB8A60D4224C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10064054-7714-4B7E-97E5-414C760223BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10064054-7714-4B7E-97E5-414C760223BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10064054-7714-4B7E-97E5-414C760223BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10064054-7714-4B7E-97E5-414C760223BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,10 +83,10 @@ Global
 		{EDA86B59-AC49-41A4-9BCE-B59010DC48D8} = {338826BA-0785-4C75-A1B4-19F0CFA5CA13}
 		{7E0AD4CE-E9AE-4420-968F-69363C965F94} = {338826BA-0785-4C75-A1B4-19F0CFA5CA13}
 		{A107DD9A-A9C3-4AA3-A67B-A7B0CAF6CE58} = {338826BA-0785-4C75-A1B4-19F0CFA5CA13}
-		{6AC7F3C0-E33C-4B63-866B-278BDFA349AE} = {8E720F87-53B1-43FF-A070-44B6FB9882EE}
 		{59414AEA-6F22-424F-9C05-AC4F9EED9F54} = {DAD37EDC-AD77-4E70-B2ED-39D9B4B7A13C}
 		{1FEC8375-5C1B-4241-BC58-AC0EB2C4A999} = {DAD37EDC-AD77-4E70-B2ED-39D9B4B7A13C}
 		{A4D14B75-E889-4FF1-9DCD-EB8A60D4224C} = {8E720F87-53B1-43FF-A070-44B6FB9882EE}
+		{10064054-7714-4B7E-97E5-414C760223BE} = {8E720F87-53B1-43FF-A070-44B6FB9882EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA17BC0E-6D05-4FD9-8173-26A1767FB228}

@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Ejercicio2.Api
 {
@@ -18,6 +14,14 @@ namespace Ejercicio2.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, loggingBuilder) =>
+                {
+                     loggingBuilder.ClearProviders();
+                     loggingBuilder.AddConsole();
+                     loggingBuilder.AddSerilog(new LoggerConfiguration()
+                                                     .ReadFrom.Configuration(hostingContext.Configuration)
+                                                     .CreateLogger());
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

@@ -1,15 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using Ejercicio2.Api.Domain;
+using Ejercicio2.Api.Domain.Interfaces;
+using Ejercicio2.Api.Repository.Interfaces;
+using Ejercicio2.Api.Repository.MsSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Ejercicio2.Api
 {
@@ -26,6 +29,12 @@ namespace Ejercicio2.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddCustomDomain()
+                    .AddCustomDbContextMSSQL(Configuration)
+                    .AddSwagger();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +47,16 @@ namespace Ejercicio2.Api
 
             app.UseHttpsRedirection();
 
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ejemplo2api V1");
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -46,6 +65,58 @@ namespace Ejercicio2.Api
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddCustomDomain(this IServiceCollection services)
+        {
+            services.AddScoped<IUsers, UsersDm>();
+            return services;
+        }
+
+        public static IServiceCollection AddCustomDbContextMSSQL(this IServiceCollection services, IConfiguration Configuration) 
+        {
+            services.AddDbContext<UsersDbContext>(options =>  
+                    options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddSwagger(this IServiceCollection services) 
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "ejercicio2",
+                    Description = "Ejercicio 2",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "ejercicio2api",
+                        Email = string.Empty,
+                        Url = new Uri("https://example.com/contact"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            return services;
         }
     }
 }

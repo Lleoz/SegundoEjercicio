@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.4" />
     <PackageReference Include="Serilog" Version="2.9.0" />
@@ -29,9 +30,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Context\Ejercicio2.Api.Context.MsSql\Ejercicio2.Api.Context.MsSql.csproj" />
+    <ProjectReference Include="..\..\Context\Ejercicio2.Api.Context.Sqlite\Ejercicio2.Api.Context.Sqlite.csproj" />
     <ProjectReference Include="..\..\Domain\Ejercicio2.Api.Domain\Ejercicio2.Api.Domain.csproj" />
+    <ProjectReference Include="..\..\Entities\Ejercicio2.Api.Entities\Ejercicio2.Api.Entities.csproj" />
     <ProjectReference Include="..\..\Repositories\Ejercicio2.Api.Repository.Interfaces\Ejercicio2.Api.Repository.Interfaces.csproj" />
     <ProjectReference Include="..\..\Repositories\Ejercicio2.Api.Repository.MsSql\Ejercicio2.Api.Repository.MsSql.csproj" />
+    <ProjectReference Include="..\..\Repositories\Ejercicio2.Api.Repository.Sqlite\Ejercicio2.Api.Repository.Sqlite.csproj" />
+    <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.AuthJwt\Ejercicio2.Api.Transversal.AuthJwt.csproj" />
+    <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.Common\Ejercicio2.Api.Transversal.Common.csproj" />
+    <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.HttpApi\Ejercicio2.Api.Transversal.HttpApi.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.Interfaces\Ejercicio2.Api.UnitOfWork.Interfaces.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.Sqlite\Ejercicio2.Api.UnitOfWork.Sqlite.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.SqlServer\Ejercicio2.Api.UnitOfWork.MsSql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 

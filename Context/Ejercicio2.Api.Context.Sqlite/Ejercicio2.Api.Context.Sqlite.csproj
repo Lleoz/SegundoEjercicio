@@ -6,11 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Context\Ejercicio2.Api.Context.MsSql\Ejercicio2.Api.Context.MsSql.csproj" />
-    <ProjectReference Include="..\Ejercicio2.Api.Repository.Interfaces\Ejercicio2.Api.Repository.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Entities\Ejercicio2.Api.Entities\Ejercicio2.Api.Entities.csproj" />
   </ItemGroup>
 
 </Project>

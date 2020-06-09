@@ -1,10 +1,14 @@
 using AutoMapper;
+using Ejercicio2.Api.Context.MsSql;
+using Ejercicio2.Api.Context.Sqlite;
 using Ejercicio2.Api.Domain;
 using Ejercicio2.Api.Domain.Interfaces;
 using Ejercicio2.Api.Repository.Interfaces;
 using Ejercicio2.Api.Repository.MsSql;
+using Ejercicio2.Api.UnitOfWork.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +35,7 @@ namespace Ejercicio2.Api
             services.AddControllers();
 
             services.AddCustomDomain()
-                    .AddCustomDbContextMSSQL(Configuration)
+                    .AddCustomDbContextSqlite(Configuration)
                     .AddSwagger();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -76,18 +80,31 @@ namespace Ejercicio2.Api
             return services;
         }
 
-        public static IServiceCollection AddCustomDbContextMSSQL(this IServiceCollection services, IConfiguration Configuration) 
+        public static IServiceCollection AddCustomDbContextMsSql(this IServiceCollection services, IConfiguration Configuration)
         {
-            services.AddDbContext<UsersDbContext>(options =>  
-                    options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<MsSqlContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("SqlServerContext")));
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.MsSql.UnitOfWork>();
+            services.AddScoped<IUsersRepository, Repository.MsSql.UsersRepository>();
 
             return services;
         }
 
-        public static IServiceCollection AddSwagger(this IServiceCollection services) 
+        public static IServiceCollection AddCustomDbContextSqlite(this IServiceCollection services, IConfiguration Configuration)
+        {
+            var connection = new SqliteConnection(Configuration.GetConnectionString("SqliteContext"));
+            connection.Open();
+            services.AddDbContext<SqliteContext>(options =>
+                    options.UseSqlite(connection));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork.Sqlite.UnitOfWork>();
+            services.AddScoped<IUsersRepository, Repository.Sqlite.UsersRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {

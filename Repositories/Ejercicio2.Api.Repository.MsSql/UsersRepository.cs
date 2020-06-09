@@ -1,4 +1,5 @@
-﻿using Ejercicio2.Api.Entities;
+﻿using Ejercicio2.Api.Context.MsSql;
+using Ejercicio2.Api.Entities;
 using Ejercicio2.Api.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,13 @@ namespace Ejercicio2.Api.Repository.MsSql
 {
     public class UsersRepository : IUsersRepository
     {
+        private readonly MsSqlContext _context;
+
+        public UsersRepository(MsSqlContext context)
+        {
+            this._context = context;
+        }
+
         public async Task<int> AddAsync(User user)
         {
             throw new NotImplementedException();

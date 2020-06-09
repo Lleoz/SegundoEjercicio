@@ -1,25 +1,40 @@
-﻿using Ejercicio2.Api.Domain.Interfaces;
-using Ejercicio2.Api.Entities;
-using Ejercicio2.Api.Repository.Interfaces;
+﻿using Ejercicio2.Api.Domain.Dto;
+using Ejercicio2.Api.Domain.Interfaces;
+using Ejercicio2.Api.UnitOfWork.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ejercicio2.Api.Domain
 {
     public class UsersDm : IUsers
     {
-        private readonly IUsersRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UsersDm(IUsersRepository userRepository, IUnitOfWork unitOfWork)
+        public UsersDm(IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
-            _unitOfWork = unitOfWork;
+            this._unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            return await _userRepository.GetAllAsync();
+            var users = await _unitOfWork.Repositories.UsersRepository.GetAllAsync();
+
+            if (users == null)
+            {
+                return null;
+            }
+
+            return users
+                .Select(x => new UserDto
+                {
+                    Id = x.Id,
+                    FullName = x.FullName,
+                    Email = x.Email,
+                    BirthDate = x.BirthDate,
+                    PhoneNumber = x.PhoneNumber
+                })
+                .AsEnumerable();
         }
     }
 }

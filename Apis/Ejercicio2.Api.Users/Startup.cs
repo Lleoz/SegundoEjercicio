@@ -36,6 +36,7 @@ namespace Ejercicio2.Api
 
             services.AddCustomDomain()
                     .AddCustomDbContextSqlite(Configuration)
+                    .AddCustomDbContextMsSql(Configuration)
                     .AddSwagger();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -80,6 +81,9 @@ namespace Ejercicio2.Api
             return services;
         }
 
+        /// <summary>
+        /// Configura e inyecta el contexto por DI en el contexto de la aplicacion/api
+        /// </summary>
         public static IServiceCollection AddCustomDbContextMsSql(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddDbContext<MsSqlContext>(options =>

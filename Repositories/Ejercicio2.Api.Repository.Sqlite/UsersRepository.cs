@@ -1,4 +1,5 @@
-﻿using Ejercicio2.Api.Entities;
+﻿using Ejercicio2.Api.Context.Sqlite;
+using Ejercicio2.Api.Entities;
 using Ejercicio2.Api.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,13 @@ namespace Ejercicio2.Api.Repository.Sqlite
 {
     public class UsersRepository : IUsersRepository
     {
+        private readonly SqliteContext _context;
+
+        public UsersRepository(SqliteContext context)
+        {
+            this._context = context;
+        }
+
         public async Task<int> AddAsync(User user)
         {
             throw new NotImplementedException();
@@ -20,7 +28,21 @@ namespace Ejercicio2.Api.Repository.Sqlite
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.Run(() =>
+            {
+                return new List<User>()
+                {
+                    new User()
+                    {
+                        Id = 1,
+                        BirthDate = new DateTime(1998,1,1),
+                        Email = "user1@gmail.com",
+                        FullName = "Usuario 1",
+                        Genre = 1,
+                        PhoneNumber = "+7777777777"
+                    }
+                };
+            });
         }
 
         public async Task<User> GetByEmailAsync(string email)

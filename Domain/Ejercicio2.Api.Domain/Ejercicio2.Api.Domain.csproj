@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Entities\Ejercicio2.Api.Entities\Ejercicio2.Api.Entities.csproj" />
-    <ProjectReference Include="..\..\Repositories\Ejercicio2.Api.Repository.Interfaces\Ejercicio2.Api.Repository.Interfaces.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.Interfaces\Ejercicio2.Api.UnitOfWork.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

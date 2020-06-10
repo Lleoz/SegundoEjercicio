@@ -35,7 +35,7 @@ namespace Ejercicio2.Api
             services.AddControllers();
 
             services.AddCustomDomain()
-                    .AddCustomDbContextSqlite(Configuration)
+                    //.AddCustomDbContextSqlite(Configuration)
                     .AddCustomDbContextMsSql(Configuration)
                     .AddSwagger();
 

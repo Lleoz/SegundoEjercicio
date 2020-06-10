@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Context\Ejercicio2.Api.Context.MsSql\Ejercicio2.Api.Context.MsSql.csproj" />
+    <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.Common\Ejercicio2.Api.Transversal.Common.csproj" />
     <ProjectReference Include="..\Ejercicio2.Api.Repository.Interfaces\Ejercicio2.Api.Repository.Interfaces.csproj" />
   </ItemGroup>
 

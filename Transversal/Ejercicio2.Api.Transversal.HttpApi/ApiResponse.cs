@@ -2,7 +2,7 @@
 
 namespace Ejercicio2.Api.Transversal.HttpApi
 {
-    public class ApiResponse<T> : ApiResponse where T : class
+    public class ApiResponse<T> : ApiResponse
     {
         public T Result { get; set; }
     }

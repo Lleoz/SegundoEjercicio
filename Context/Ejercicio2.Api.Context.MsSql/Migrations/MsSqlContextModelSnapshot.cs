@@ -29,21 +29,29 @@ namespace Ejercicio2.Api.Context.MsSql.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnName("BirthDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(200)")
+                        .HasMaxLength(200);
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnName("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Genre")
+                    b.Property<byte>("Genre")
                         .HasColumnName("Genre")
-                        .HasColumnType("int");
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnName("LastName")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("Name")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -51,11 +59,26 @@ namespace Ejercicio2.Api.Context.MsSql.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnName("PhoneNumber")
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
-                    b.HasKey("Id");
+                    b.Property<string>("SecondLastName")
+                        .HasColumnName("SecondLastName")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
-                    b.ToTable("Users");
+                    b.HasKey("Id")
+                        .HasName("PK_Users");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
+                    b.ToTable("Users","dbo");
                 });
 #pragma warning restore 612, 618
         }

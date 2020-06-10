@@ -8,13 +8,13 @@ namespace Ejercicio2.Api.UnitOfWork.MsSql
     public class UnitOfWorkRepository : IUnitOfWorkRepository
     {
         private readonly MsSqlContext _context;
-        private IUsersRepository _usersRepository;
+        private IUsersRepository _users;
 
         public UnitOfWorkRepository(MsSqlContext context)
         {
             this._context = context;
         }
 
-        public IUsersRepository UsersRepository => this._usersRepository ?? (this._usersRepository = new UsersRepository(this._context));
+        public IUsersRepository Users => this._users ?? (this._users = new UsersRepository(this._context));
     }
 }

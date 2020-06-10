@@ -73,8 +73,14 @@ namespace Ejercicio2.Api
         }
     }
 
+    /// <summary>
+    /// Extensiones para agregar a la coleccion de Servicios
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Agrega los "domains" para tenerlos disponibles por DI
+        /// </summary>
         public static IServiceCollection AddCustomDomain(this IServiceCollection services)
         {
             services.AddScoped<IUsers, UsersDm>();
@@ -82,7 +88,7 @@ namespace Ejercicio2.Api
         }
 
         /// <summary>
-        /// Configura e inyecta el contexto por DI en el contexto de la aplicacion/api
+        /// Configura e inyecta el DbContext de MSSQL por DI en el contexto de la aplicacion/api
         /// </summary>
         public static IServiceCollection AddCustomDbContextMsSql(this IServiceCollection services, IConfiguration Configuration)
         {
@@ -95,6 +101,9 @@ namespace Ejercicio2.Api
             return services;
         }
 
+        /// <summary>
+        /// Configura e inyecta el DbContext de SQLite por DI en el contexto de la aplicacion/api
+        /// </summary>
         public static IServiceCollection AddCustomDbContextSqlite(this IServiceCollection services, IConfiguration Configuration)
         {
             var connection = new SqliteConnection(Configuration.GetConnectionString("SqliteContext"));
@@ -108,6 +117,9 @@ namespace Ejercicio2.Api
             return services;
         }
 
+        /// <summary>
+        /// Enlaza la documentacion generada por Swagger como una ruta de la API
+        /// </summary>
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>

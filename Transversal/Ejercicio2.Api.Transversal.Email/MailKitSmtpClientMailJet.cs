@@ -1,4 +1,4 @@
-﻿using Ejercicio2.Api.Entities;
+﻿using Ejercicio2.Api.Transversal.Email.Entities;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Ejercicio2.Api.Transversal.Email
 {
-    public class MailKitSmtpClientMailJet : ISmtpClient
+    public class MailKitSmtpClientMailJet : Interfaces.ISmtpClient
     {
         private readonly IConfiguration _configuration;
         public MailKitSmtpClientMailJet(IConfiguration configuration)

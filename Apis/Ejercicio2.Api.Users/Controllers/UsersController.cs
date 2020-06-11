@@ -1,5 +1,6 @@
 ﻿using Ejercicio2.Api.Domain.Dto;
 using Ejercicio2.Api.Domain.Interfaces;
+using Ejercicio2.Api.Transversal.Email;
 using Ejercicio2.Api.Transversal.HttpApi;
 using Ejercicio2.Api.Users.Requests;
 using Ejercicio2.Api.Users.Responses;
@@ -23,21 +24,24 @@ namespace Ejercicio2.Api.Users.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IUsers _usersDm;
+        private readonly ISecurityDm _securityDm;
 
         /// <summary>
         /// Contructor del controller
         /// </summary>
-        public UsersController(ILogger<UsersController> logger, IUsers usersDm) 
+        public UsersController(ILogger<UsersController> logger, IUsers usersDm,
+                               ISecurityDm securityDm)
         {
             _logger = logger;
             _usersDm = usersDm;
+            _securityDm = securityDm;
         }
 
         /// <summary>
         /// Permite obtener todos los usuarios
         /// </summary>
         [HttpGet("getall")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<UserDto>>>> GetAll() 
+        public async Task<ActionResult<ApiResponse<IEnumerable<UserDto>>>> GetAll()
         {
             try
             {
@@ -76,7 +80,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite obtener los datos de un usuario
         /// </summary>
         [HttpGet("get/{email}")]
-        public async Task<ActionResult<ApiResponse<UserDto>>> Get([FromRoute]string email)
+        public async Task<ActionResult<ApiResponse<UserDto>>> Get([FromRoute] string email)
         {
             try
             {
@@ -115,11 +119,11 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite agregar un nuevo usuario
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<int>>> Post([FromBody]ApiRequest<UserRequest> request)
+        public async Task<ActionResult<ApiResponse<int>>> Post([FromBody] ApiRequest<UserRequest> request)
         {
             try
             {
-                var userData = await this._usersDm.AddAsync(new UserDto
+                UserDto userDto = new UserDto
                 {
                     Name = request.Data.Name,
                     LastName = request.Data.LastName,
@@ -128,15 +132,13 @@ namespace Ejercicio2.Api.Users.Controllers
                     BirthDate = request.Data.BirthDate,
                     PhoneNumber = request.Data.PhoneNumber,
                     Genre = request.Data.Genre
-                });
+                };
+                var userData = await this._usersDm.AddAsync(userDto);
 
                 if (userData != null && userData.Id > 0 && !String.IsNullOrWhiteSpace(userData.Password))
                 {
-                    /**
-                     
-                        Envíar por correo el password    
-                    
-                     */
+                    /* Envía por correo el password */
+                    _securityDm.SendPasswordByEmail(userDto, userData.Password);
 
                     return Ok(new ApiResponse<int>
                     {
@@ -169,7 +171,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite editar la información de un usuario
         /// </summary>
         [HttpPut("put/{id}")]
-        public async Task<ActionResult<ApiResponse>> Put([FromRoute]int id, [FromBody]ApiRequest<UserRequest> request)
+        public async Task<ActionResult<ApiResponse>> Put([FromRoute] int id, [FromBody] ApiRequest<UserRequest> request)
         {
             try
             {
@@ -217,7 +219,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite editar el password del usuario y ésta es envíada por correo
         /// </summary>
         [HttpPut("changepassword/{email}")]
-        public async Task<ActionResult<ApiResponse>> ChangePassword([FromRoute]string email)
+        public async Task<ActionResult<ApiResponse>> ChangePassword([FromRoute] string email)
         {
             try
             {
@@ -261,7 +263,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite eliminar un usuario
         /// </summary>
         [HttpDelete("delete/{id}")]
-        public async Task<ActionResult<ApiResponse>> Delete([FromRoute]int id)
+        public async Task<ActionResult<ApiResponse>> Delete([FromRoute] int id)
         {
             try
             {
@@ -300,7 +302,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<ApiResponse<LoginResponse>>> Login([FromBody]ApiRequest<LoginRequest> request)
+        public async Task<ActionResult<ApiResponse<LoginResponse>>> Login([FromBody] ApiRequest<LoginRequest> request)
         {
             try
             {
@@ -319,7 +321,7 @@ namespace Ejercicio2.Api.Users.Controllers
 
                     return Ok(new ApiResponse<LoginResponse>
                     {
-                        Result = new LoginResponse 
+                        Result = new LoginResponse
                         {
                             Token = null,
                             ExpiresToken = 0
@@ -353,7 +355,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpPut("refreshtoken/{token}")]
-        public async Task<ActionResult<ApiResponse<LoginResponse>>> RefreshToken([FromRoute]string token)
+        public async Task<ActionResult<ApiResponse<LoginResponse>>> RefreshToken([FromRoute] string token)
         {
             try
             {

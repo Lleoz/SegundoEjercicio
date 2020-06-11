@@ -5,6 +5,7 @@ using Ejercicio2.Api.Domain;
 using Ejercicio2.Api.Domain.Interfaces;
 using Ejercicio2.Api.Repository.Interfaces;
 using Ejercicio2.Api.Repository.MsSql;
+using Ejercicio2.Api.Transversal.Email;
 using Ejercicio2.Api.UnitOfWork.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,12 +38,15 @@ namespace Ejercicio2.Api
             services.AddCustomDomain()
                     //.AddCustomDbContextSqlite(Configuration)
                     .AddCustomDbContextMsSql(Configuration)
+                    .AddCustomSmtpClient()
                     .AddSwagger();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        ///  This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -84,6 +88,7 @@ namespace Ejercicio2.Api
         public static IServiceCollection AddCustomDomain(this IServiceCollection services)
         {
             services.AddScoped<IUsers, UsersDm>();
+            services.AddScoped<ISecurityDm, SecurityDm>();
             return services;
         }
 
@@ -113,6 +118,16 @@ namespace Ejercicio2.Api
 
             services.AddScoped<IUnitOfWork, UnitOfWork.Sqlite.UnitOfWork>();
             services.AddScoped<IUsersRepository, Repository.Sqlite.UsersRepository>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Agrega los servicios de envio de email por SMTP
+        /// </summary>
+        public static IServiceCollection AddCustomSmtpClient(this IServiceCollection services)
+        {
+            services.AddScoped<ISmtpClient, MailKitSmtpClientMailJet>();
 
             return services;
         }

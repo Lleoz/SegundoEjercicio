@@ -45,6 +45,7 @@
     <ProjectReference Include="..\..\Repositories\Ejercicio2.Api.Repository.Sqlite\Ejercicio2.Api.Repository.Sqlite.csproj" />
     <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.AuthJwt\Ejercicio2.Api.Transversal.AuthJwt.csproj" />
     <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.Common\Ejercicio2.Api.Transversal.Common.csproj" />
+    <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.Email\Ejercicio2.Api.Transversal.Email.csproj" />
     <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.HttpApi\Ejercicio2.Api.Transversal.HttpApi.csproj" />
     <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.Interfaces\Ejercicio2.Api.UnitOfWork.Interfaces.csproj" />
     <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.Sqlite\Ejercicio2.Api.UnitOfWork.Sqlite.csproj" />

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Entities\Ejercicio2.Api.Entities\Ejercicio2.Api.Entities.csproj" />
+    <ProjectReference Include="..\..\Transversal\Ejercicio2.Api.Transversal.Email\Ejercicio2.Api.Transversal.Email.csproj" />
     <ProjectReference Include="..\..\UnitOfWork\Ejercicio2.Api.UnitOfWork.Interfaces\Ejercicio2.Api.UnitOfWork.Interfaces.csproj" />
   </ItemGroup>
 

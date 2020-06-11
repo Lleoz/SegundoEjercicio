@@ -1,5 +1,15 @@
 # Backend del Segundo Ejercicio
 
+# Integrantes del equipo
+
+- [x] [@Lleoz](https://discordapp.com/users/476574369229832203)
+- [x] [@josue.samano](https://discordapp.com/users/335850826318741506)
+- [x] [@Vladimir Cabrera](https://discordapp.com/users/683745689892815043)
+- [x] [@Romer](https://discordapp.com/users/702955480267358329)
+- [x] [@portusan](https://discordapp.com/users/717776768244908053)
+- [x] [@RiojasMx](https://discordapp.com/users/201813752356536320)
+- [x] [@programando.ideas](https://discordapp.com/users/716354253081542666)
+
 # Se tiene que crear un API que cree, actualice, eliminé y obtenga uno o más registros
 
 1) Crear usuario (Todos los campos son necesarios) 

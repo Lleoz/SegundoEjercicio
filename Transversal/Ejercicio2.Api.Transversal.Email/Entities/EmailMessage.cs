@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ejercicio2.Api.Entities
+﻿namespace Ejercicio2.Api.Transversal.Email.Entities
 {
     public class EmailMessage
     {

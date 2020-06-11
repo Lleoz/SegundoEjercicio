@@ -1,9 +1,8 @@
 ﻿using Ejercicio2.Api.Domain.Dto;
 using Ejercicio2.Api.Domain.Interfaces;
-using Ejercicio2.Api.Entities;
-using Ejercicio2.Api.Transversal.Email;
+using Ejercicio2.Api.Transversal.Email.Entities;
+using Ejercicio2.Api.Transversal.Email.Interfaces;
 using System.Text;
-using System.Web;
 
 namespace Ejercicio2.Api.Domain
 {
@@ -23,7 +22,7 @@ namespace Ejercicio2.Api.Domain
                 Email = user.Email,
                 Subject = "Contraseña de acceso Grupo Angular!"
             };
-            messageToSend.Body.SubMimeType = Consts.SUB_MIMETYPE_HTML;
+            messageToSend.Body.SubMimeType = ConstsEmail.SUB_MIMETYPE_HTML;
             messageToSend.Body.Text = GenerateHTMLPassWord(password);
 
             _smtpClient.Send(messageToSend);

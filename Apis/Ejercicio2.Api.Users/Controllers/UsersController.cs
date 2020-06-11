@@ -1,6 +1,5 @@
 ﻿using Ejercicio2.Api.Domain.Dto;
 using Ejercicio2.Api.Domain.Interfaces;
-using Ejercicio2.Api.Transversal.Email;
 using Ejercicio2.Api.Transversal.HttpApi;
 using Ejercicio2.Api.Users.Requests;
 using Ejercicio2.Api.Users.Responses;

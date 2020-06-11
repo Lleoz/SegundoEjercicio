@@ -1,13 +1,12 @@
-﻿using Ejercicio2.Api.Entities;
+﻿using Ejercicio2.Api.Transversal.Email.Entities;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
-using System.Net;
 
 namespace Ejercicio2.Api.Transversal.Email
 {
-    public class MailKitSmtpClient : ISmtpClient
+    public class MailKitSmtpClient : Interfaces.ISmtpClient
     {
         private readonly IConfiguration _configuration;
         public MailKitSmtpClient(IConfiguration configuration)

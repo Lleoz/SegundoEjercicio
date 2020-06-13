@@ -122,10 +122,11 @@ namespace Ejercicio2.Api.Domain
 
         public async Task<UserDto> GetByAsync(string email, string password)
         {
+            var encryptedPassword = EncryptedTool.EncryptToMD5(password);
             var user = await _unitOfWork.Repositories.Users
                 .GetByAsync(x =>
                     x.Email == email &&
-                    x.Password == password);
+                    x.Password == encryptedPassword);
 
             if (user == null)
             {
@@ -234,8 +235,9 @@ namespace Ejercicio2.Api.Domain
             return new UserDataDto 
             {
                 Id = entity.Id,
+                FullName = $"{entity.Name} {entity.LastName}{(!String.IsNullOrWhiteSpace(entity.SecondLastName) ? $" {entity.SecondLastName}" : String.Empty)}",
                 Email = entity.Email,
-                Password = encryptedPassword
+                Password = password
             };
         }
     }

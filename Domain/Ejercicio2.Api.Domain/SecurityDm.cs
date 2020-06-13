@@ -28,6 +28,20 @@ namespace Ejercicio2.Api.Domain
             _smtpClient.Send(messageToSend);
         }
 
+        public void SendPasswordByEmail(string name, string email, string password)
+        {
+            EmailMessage messageToSend = new EmailMessage
+            {
+                FullName = name,
+                Email = email,
+                Subject = "Contraseña de acceso Grupo Angular!"
+            };
+            messageToSend.Body.SubMimeType = ConstsEmail.SUB_MIMETYPE_HTML;
+            messageToSend.Body.Text = GenerateHTMLPassWord(password);
+
+            _smtpClient.Send(messageToSend);
+        }
+
         private string GenerateHTMLPassWord(string password)
         {
             StringBuilder sblHtml = new StringBuilder();

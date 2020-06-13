@@ -4,9 +4,12 @@ using Ejercicio2.Api.Context.Sqlite;
 using Ejercicio2.Api.Domain;
 using Ejercicio2.Api.Domain.Interfaces;
 using Ejercicio2.Api.Repository.Interfaces;
+using Ejercicio2.Api.Transversal.AuthJwt.Tokens;
 using Ejercicio2.Api.Transversal.Email;
 using Ejercicio2.Api.Transversal.Email.Interfaces;
 using Ejercicio2.Api.UnitOfWork.Interfaces;
+using Ejercicio2.Api.Users.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.Sqlite;
@@ -14,15 +17,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Ejercicio2.Api
 {
     public class Startup
     {
+        private readonly string myPolicy = "thisIsMyPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -42,6 +51,25 @@ namespace Ejercicio2.Api
                     .AddSwagger();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: myPolicy,
+                    configurePolicy: builder => builder
+                        .WithOrigins(appSettings.OriginCors)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+
+            services.ConfigureJwtService(
+                secret: appSettings.Secret,
+                issuer: appSettings.Issuer,
+                audience: appSettings.Audience);
         }
 
         /// <summary>
@@ -68,8 +96,12 @@ namespace Ejercicio2.Api
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
+            
+            app.UseCors(myPolicy);
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -162,6 +194,30 @@ namespace Ejercicio2.Api
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                // Add JWT authorization
+                c.AddSecurityDefinition("Authorization", new OpenApiSecurityScheme()
+                {
+                    Description = "Authorization by API key",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Name = "Authorization"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { 
+                        //{ "Authorization", new string[0] }
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
             });
 
             return services;

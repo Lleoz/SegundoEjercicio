@@ -1,6 +1,8 @@
 ﻿using Ejercicio2.Api.Domain.Dto;
 using Ejercicio2.Api.Domain.Interfaces;
+using Ejercicio2.Api.Transversal.AuthJwt.Controllers;
 using Ejercicio2.Api.Transversal.HttpApi;
+using Ejercicio2.Api.Users.Helpers;
 using Ejercicio2.Api.Users.Requests;
 using Ejercicio2.Api.Users.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -17,9 +20,10 @@ namespace Ejercicio2.Api.Users.Controllers
     /// <summary>
     /// Controller api de Usuarios
     /// </summary>
+    [Authorize]
     [Route("api/users")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : AuthorizationController
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IUsers _usersDm;
@@ -28,7 +32,8 @@ namespace Ejercicio2.Api.Users.Controllers
         /// <summary>
         /// Contructor del controller
         /// </summary>
-        public UsersController(ILogger<UsersController> logger, IUsers usersDm,
+        public UsersController(ILogger<UsersController> logger, 
+                               IUsers usersDm,
                                ISecurityDm securityDm)
         {
             _logger = logger;
@@ -40,18 +45,35 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite obtener todos los usuarios
         /// </summary>
         [HttpGet("getall")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<UserDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<IEnumerable<UserResponse>>>> GetAll()
         {
             try
             {
+                // Ejemplo para obtener las propiedades en la sesión del Token con JWT
+                var userId = this.AppSession.GetPropertyValue<int>("UserId");
+                var email = this.AppSession.GetPropertyValue<string>("Email");
+
                 var users = await _usersDm.GetAllAsync();
 
                 if (users != null && users.Any())
                 {
-                    return Ok(new ApiResponse<IEnumerable<UserDto>>
+                    return Ok(new ApiResponse<IEnumerable<UserResponse>>
                     {
-                        Result = users,
-                        Error = null,
+                        Result = users
+                            .Select(x => new UserResponse 
+                            {
+                                Id = x.Id,
+                                Name = x.Name,
+                                LastName = x.LastName,
+                                SecondLastName = x.SecondLastName,
+                                Email = x.Email,
+                                BirthDate = x.BirthDate,
+                                PhoneNumber = x.PhoneNumber,
+                                Genre = x.Genre,
+                                FullName = x.FullName
+                            })
+                            .AsEnumerable(),
+                        Error = $"{userId.ToString()} - {email}",
                         Status = HttpStatusCode.OK
                     });
                 }
@@ -79,7 +101,7 @@ namespace Ejercicio2.Api.Users.Controllers
         /// Permite obtener los datos de un usuario
         /// </summary>
         [HttpGet("get/{email}")]
-        public async Task<ActionResult<ApiResponse<UserDto>>> Get([FromRoute] string email)
+        public async Task<ActionResult<ApiResponse<UserResponse>>> Get([FromRoute] string email)
         {
             try
             {
@@ -87,9 +109,20 @@ namespace Ejercicio2.Api.Users.Controllers
 
                 if (user != null)
                 {
-                    return Ok(new ApiResponse<UserDto>
+                    return Ok(new ApiResponse<UserResponse>
                     {
-                        Result = user,
+                        Result = new UserResponse 
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            LastName = user.LastName,
+                            SecondLastName = user.SecondLastName,
+                            Email = user.Email,
+                            BirthDate = user.BirthDate,
+                            PhoneNumber = user.PhoneNumber,
+                            Genre = user.Genre,
+                            FullName = user.FullName
+                        },
                         Error = null,
                         Status = HttpStatusCode.OK
                     });
@@ -117,8 +150,9 @@ namespace Ejercicio2.Api.Users.Controllers
         /// <summary>
         /// Permite agregar un nuevo usuario
         /// </summary>
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<int>>> Post([FromBody] ApiRequest<UserRequest> request)
+        public async Task<ActionResult<ApiResponse<UserCreateResponse>>> Post([FromBody] ApiRequest<UserRequest> request)
         {
             try
             {
@@ -136,12 +170,23 @@ namespace Ejercicio2.Api.Users.Controllers
 
                 if (userData != null && userData.Id > 0 && !String.IsNullOrWhiteSpace(userData.Password))
                 {
-                    /* Envía por correo el password */
-                    _securityDm.SendPasswordByEmail(userDto, userData.Password);
-
-                    return Ok(new ApiResponse<int>
+                    try
                     {
-                        Result = userData.Id,
+                        /* Envía por correo el password */
+                        _securityDm.SendPasswordByEmail(userDto, userData.Password);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex.Message);
+                    }
+                    
+                    return Ok(new ApiResponse<UserCreateResponse>
+                    {
+                        Result = new UserCreateResponse 
+                        {
+                            Id = userData.Id,
+                            Password = userData.Password
+                        },
                         Error = null,
                         Status = HttpStatusCode.OK
                     });
@@ -226,11 +271,18 @@ namespace Ejercicio2.Api.Users.Controllers
 
                 if (userData != null && userData.Id > 0 && !String.IsNullOrWhiteSpace(userData.Password))
                 {
-                    /**
-                     
-                        Envíar por correo el password    
-                    
-                     */
+                    try
+                    {
+                        /* Envía por correo el password */
+                        this._securityDm.SendPasswordByEmail(
+                            name: userData.FullName,
+                            email: userData.Email,
+                            password: userData.Password);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex.Message);
+                    }
 
                     return Ok(new ApiResponse
                     {
@@ -284,90 +336,6 @@ namespace Ejercicio2.Api.Users.Controllers
                         Status = HttpStatusCode.BadRequest
                     });
                 }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error users/login");
-                return BadRequest(new ApiResponse
-                {
-                    Error = e.Message,
-                    Status = HttpStatusCode.BadRequest
-                });
-            }
-        }
-
-        /// <summary>
-        /// Permite iniciar sesión regresando un token
-        /// </summary>
-        [AllowAnonymous]
-        [HttpPost("login")]
-        public async Task<ActionResult<ApiResponse<LoginResponse>>> Login([FromBody] ApiRequest<LoginRequest> request)
-        {
-            try
-            {
-                var user = await this._usersDm
-                    .GetByAsync(
-                        email: request.Data.Email,
-                        password: request.Data.Password);
-
-                if (user != null)
-                {
-                    /**
-                     
-                    Agregar token con JWT
-                     
-                     */
-
-                    return Ok(new ApiResponse<LoginResponse>
-                    {
-                        Result = new LoginResponse
-                        {
-                            Token = null,
-                            ExpiresToken = 0
-                        },
-                        Error = null,
-                        Status = HttpStatusCode.OK
-                    });
-                }
-                else
-                {
-                    return NotFound(new ApiResponse
-                    {
-                        Error = "User not found",
-                        Status = HttpStatusCode.NotFound
-                    });
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error users/login");
-                return BadRequest(new ApiResponse
-                {
-                    Error = e.Message,
-                    Status = HttpStatusCode.BadRequest
-                });
-            }
-        }
-
-        /// <summary>
-        /// Permite volver a regenerar el token
-        /// </summary>
-        [AllowAnonymous]
-        [HttpPut("refreshtoken/{token}")]
-        public async Task<ActionResult<ApiResponse<LoginResponse>>> RefreshToken([FromRoute] string token)
-        {
-            try
-            {
-                return Ok(new ApiResponse<LoginResponse>
-                {
-                    Result = new LoginResponse
-                    {
-                        Token = null,
-                        ExpiresToken = 0
-                    },
-                    Error = null,
-                    Status = HttpStatusCode.OK
-                });
             }
             catch (Exception e)
             {

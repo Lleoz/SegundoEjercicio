@@ -10,6 +10,10 @@
 - [x] [@RiojasMx](https://discordapp.com/users/201813752356536320)
 - [x] [@programando.ideas](https://discordapp.com/users/716354253081542666)
 
+# Video demo
+
+[Prueba del cliente y api](https://youtu.be/1rJqbYze7-4)
+
 # Se tiene que crear un API que cree, actualice, eliminé y obtenga uno o más registros
 
 1) Crear usuario (Todos los campos son necesarios) 

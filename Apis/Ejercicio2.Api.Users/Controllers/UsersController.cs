@@ -148,6 +148,57 @@ namespace Ejercicio2.Api.Users.Controllers
         }
 
         /// <summary>
+        /// Permite obtener los datos de un usuario por su id
+        /// </summary>
+        [HttpGet("getbyid/{id}")]
+        public async Task<ActionResult<ApiResponse<UserResponse>>> GetById([FromRoute] int id)
+        {
+            try
+            {
+                var user = await _usersDm.GetByAsync(id);
+
+                if (user != null)
+                {
+                    return Ok(new ApiResponse<UserResponse>
+                    {
+                        Result = new UserResponse
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            LastName = user.LastName,
+                            SecondLastName = user.SecondLastName,
+                            Email = user.Email,
+                            BirthDate = user.BirthDate,
+                            PhoneNumber = user.PhoneNumber,
+                            Genre = user.Genre,
+                            FullName = user.FullName
+                        },
+                        Error = null,
+                        Status = HttpStatusCode.OK
+                    });
+                }
+                else
+                {
+                    return NotFound(new ApiResponse
+                    {
+                        Error = "Users not found",
+                        Status = HttpStatusCode.NotFound
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error users/getall");
+                return BadRequest(new ApiResponse
+                {
+                    Error = e.Message,
+                    Status = HttpStatusCode.BadRequest
+                });
+            }
+        }
+
+
+        /// <summary>
         /// Permite agregar un nuevo usuario
         /// </summary>
         [AllowAnonymous]

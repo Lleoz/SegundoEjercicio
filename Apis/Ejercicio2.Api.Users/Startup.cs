@@ -81,8 +81,10 @@ namespace Ejercicio2.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -99,9 +101,9 @@ namespace Ejercicio2.Api
             app.UseAuthentication();
 
             app.UseAuthorization();
-            
+
             app.UseCors(myPolicy);
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

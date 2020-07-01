@@ -98,7 +98,12 @@ Guía para poder instalar las herramientas necesarias para ejecutar el proyecto.
 		}
 		```
 - **Ejecución**
-
+	- Establecer como proyecto de inicio a **Apis/Ejercicio2.Api.Users**
+	- ![alt text](https://github.com/Lleoz/SegundoEjercicio/blob/master/images/inst04.png)
+	- Ejecutarlo como proceso
+	- ![alt text](https://github.com/Lleoz/SegundoEjercicio/blob/master/images/inst05.png)
+	- Extraer la URL generada por la extension Conveyor y copiarla en el archivo **environment.ts** del proyecto [Web en Angular](https://github.com/Lleoz/proyectoLogin) y la [App en Ionic](https://github.com/EquipoAngular/proyectoIonic)
+	- ![alt text](https://github.com/Lleoz/SegundoEjercicio/blob/master/images/inst06.png)
 ------------
 
 

@@ -36,12 +36,10 @@ Guía para poder instalar las herramientas necesarias para ejecutar el proyecto.
 - **Configuración del entorno**
   - Si se desea activar el envio de mail con la contraseña se debe gestionar previamente
   	- Se puede elegir por ejemplo MailJET que posee cuentas free con 200 mails por mes
-  - Generar la base de datos
+	- Tambien se puede elegir [Mailtrap](https://mailtrap.io/)
+  - Base de datos
   	- Crear un usuario con permiso de **dbCreator**
 	- ![alt text](https://github.com/Lleoz/SegundoEjercicio/blob/master/images/inst03.png)
-	- Posicionarse en el directorio Ejercicio2.Api.Context.MsSql
-		- cd [directorio del proyecto]\Context\Ejercicio2.Api.Context.MsSql
-		- `dotnet-ef database update --startup-project="../../Apis/Ejercicio2.Api.Users/Ejercicio2.Api.Users.csproj" --context="MsSqlContext"`
   - Solución en Visual Studio
   	- Editar el archivo de secretos del proyecto Ejercicio2.Api.Users
   	- ![alt text](https://github.com/Lleoz/SegundoEjercicio/blob/master/images/inst02.png)
@@ -97,6 +95,11 @@ Guía para poder instalar las herramientas necesarias para ejecutar el proyecto.
 		  }
 		}
 		```
+- Generar la base de Datos
+	- Posicionarse en el directorio Ejercicio2.Api.Context.MsSql
+	- cd [directorio del proyecto]\Context\Ejercicio2.Api.Context.MsSql
+	- `dotnet-ef database update --startup-project="../../Apis/Ejercicio2.Api.Users/Ejercicio2.Api.Users.csproj" --context="MsSqlContext"`
+
 - **Ejecución**
 	- Establecer como proyecto de inicio a **Apis/Ejercicio2.Api.Users**
 	- ![alt text](https://github.com/Lleoz/SegundoEjercicio/blob/master/images/inst04.png)
